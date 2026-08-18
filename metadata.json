@@ -1,0 +1,6 @@
+{
+  "name": "$MILLI Memecoin",
+  "description": "The official website for $MILLI (Milli for Million) memecoin on the Robinhood network.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
