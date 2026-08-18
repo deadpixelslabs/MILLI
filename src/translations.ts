@@ -24,6 +24,10 @@ export const t = {
     footer: "$MILLI is a meme coin created for entertainment purposes only and has no intrinsic value or expectation of financial return. There is no formal team or roadmap. The coin is completely useless and for entertainment purposes only. By purchasing $MILLI, you agree that you are doing so for fun and you are ready to be a millionaire in your imagination.",
     footerRights: "© 2026 $MILLI Coin. All rights reserved on the Robinhood Network.",
     langSwitch: "🇨🇳 切换到中文",
+    liveTitle: "🚨 LIVE MINTING BRRRR 🚨",
+    minted: "TOKENS PRINTED SO FAR",
+    refreshing: "Auto-refreshing every 20s so you can watch us get richer...",
+    printing: "BRRRRRRR...",
   },
   zh: {
     subtitle: "因为我们都只想成为百万富翁。",
@@ -48,5 +52,9 @@ export const t = {
     footer: "$MILLI 是一种纯属娱乐的模因币，没有内在价值或财务回报预期。没有正式的团队或路线图。这枚硬币完全没有用处，仅供娱乐。购买 $MILLI，即表示您同意您这样做是为了好玩，并且您准备在想象中成为百万富翁。",
     footerRights: "© 2026 $MILLI Coin. 保留所有权利在罗宾汉网络上。",
     langSwitch: "🇺🇸 Switch to English",
+    liveTitle: "🚨 疯狂印钞直播 (LIVE MINTING) 🚨",
+    minted: "目前已印制代币",
+    refreshing: "每 20 秒自动刷新，见证我们暴富...",
+    printing: "印钞机嗡嗡作响中...",
   }
 };
