@@ -1,0 +1,40 @@
+{
+  "environment": "Isolated Anvil EVM, no public-chain deployment",
+  "compiler": "0.8.26+commit.8a97fa7a.Emscripten.clang",
+  "uniqueCharacters": 5555,
+  "rarityCounts": [
+    4166,
+    1111,
+    278
+  ],
+  "checkedOnchainAssignments": 5555,
+  "svgMatchesWebsite": [
+    1,
+    2,
+    8,
+    19,
+    144,
+    888,
+    2345,
+    5555
+  ],
+  "deploymentGas": "11617420",
+  "tokenURIGas": "5412495",
+  "treasuryTwoMintGas": "98904",
+  "checks": [
+    "lifetime wallet limit survives transfers",
+    "treasury mints more than two",
+    "real 5555 cap reached; treasury cannot exceed it",
+    "zero price / nonpayable",
+    "unsafe receiver rollback",
+    "reentrant mint blocked",
+    "owner-only controls",
+    "ERC721/ERC2981/ICreatorToken interfaces",
+    "5% royalty math",
+    "validator transfer authorization, direct and approved operator",
+    "mint exempt from transfer validator",
+    "immutable data hash checks",
+    "SVG metadata decodes without external assets",
+    "all 5555 trait tuples unique without backgrounds"
+  ]
+}

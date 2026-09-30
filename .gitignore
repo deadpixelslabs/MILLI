@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.vercel/
+test-results/
+public/deployment/
+public/art/characters/
+public/art/social.png
+art/character-atlas.svg

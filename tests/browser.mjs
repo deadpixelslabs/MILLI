@@ -1,0 +1,82 @@
+import fs from 'node:fs';
+import net from 'node:net';
+import { spawn } from 'node:child_process';
+import { createRequire } from 'node:module';
+import assert from 'node:assert/strict';
+import { chromium as playwright } from '@playwright/test';
+import lambdaChromium from '@sparticuz/chromium';
+import { JsonRpcProvider, Contract, parseEther, toBeHex } from 'ethers';
+const require=createRequire(import.meta.url);
+const treasury='0x9d4B1bDF276a2B30F9FA95DB3beC0b40477c2941';
+const port=async()=>{const s=net.createServer();await new Promise(r=>s.listen(0,'127.0.0.1',r));const p=s.address().port;await new Promise(r=>s.close(r));return p;};
+const [rpcPort,webPort]=await Promise.all([port(),port()]);
+const rpc=`http://127.0.0.1:${rpcPort}`,web=`http://127.0.0.1:${webPort}`;
+const anvil=spawn(require.resolve('@foundry-rs/anvil-linux-amd64/bin/anvil'),['--host','127.0.0.1','--port',String(rpcPort),'--chain-id','4663','--silent'],{stdio:'ignore'});
+const vite=spawn(process.execPath,['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',String(webPort)],{env:{...process.env,RPC_URL:rpc},stdio:'ignore'});
+const provider=new JsonRpcProvider(rpc,4663,{staticNetwork:true,cacheTimeout:-1});provider.pollingInterval=20;
+let browser;
+try{
+ for(let i=0;i<100;i++){try{await provider.send('eth_chainId',[]);await fetch(web);break;}catch{if(i===99)throw Error('Local fixture failed to start');await new Promise(r=>setTimeout(r,50));}}
+ await provider.send('anvil_impersonateAccount',[treasury]);await provider.send('anvil_setBalance',[treasury,toBeHex(parseEther('100'))]);
+ const user=await provider.getSigner(0),buyer=await provider.getSigner(1);const userAddress=await user.getAddress();
+ browser=await playwright.launch(process.env.BROWSER_EXECUTABLE_PATH?{executablePath:process.env.BROWSER_EXECUTABLE_PATH,args:lambdaChromium.args,headless:true}:{headless:true});
+ const page=await browser.newPage({viewport:{width:1440,height:1000}});page.setDefaultTimeout(25000);
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.exposeBinding('fixtureRPC',async(_,request)=>provider.send(request.method,request.params||[]));
+ await page.addInitScript(({treasury})=>{
+  const listeners={};let account=treasury,chain='0x1237';window.fixtureSends=0;window.rejectAt=1;
+  const emit=(name,value)=>(listeners[name]||[]).forEach(fn=>fn(value));
+  window.switchFixtureAccount=a=>{account=a;emit('accountsChanged',[a]);};
+  window.switchFixtureChain=c=>{chain=c;emit('chainChanged',c);};
+  const provider={request:async({method,params=[]})=>{
+   if(method==='eth_requestAccounts'||method==='eth_accounts')return [account];
+   if(method==='eth_chainId')return chain;
+   if(method==='wallet_switchEthereumChain'||method==='wallet_addEthereumChain'){chain='0x1237';emit('chainChanged',chain);return null;}
+   if(method==='eth_sendTransaction'){const n=window.fixtureSends++;if(n===window.rejectAt){const e=new Error('User rejected');e.code=4001;throw e;}}
+   return window.fixtureRPC({method,params});
+  },on:(name,fn)=>(listeners[name]||=[]).push(fn),removeListener:(name,fn)=>{listeners[name]=(listeners[name]||[]).filter(f=>f!==fn);}};
+  const wallet={info:{uuid:'hazels-isolated-fixture',name:'Hazels test wallet'},provider};
+  window.addEventListener('eip6963:requestProvider',()=>window.dispatchEvent(new CustomEvent('eip6963:announceProvider',{detail:wallet})));
+ },{treasury});
+ let address='';
+ await page.route('**/site-config.json',route=>route.fulfill({json:{chainId:4663,collectionAddress:address}}));
+ const connect=async()=>{await page.getByRole('button',{name:'Connect wallet',exact:true}).first().click();await page.getByRole('button',{name:'Hazels test wallet'}).click();await page.getByRole('button',{name:/Continue to the collection/}).click();};
+ fs.mkdirSync('test-results',{recursive:true});
+ await page.goto(web,{waitUntil:'networkidle'});
+ assert.equal(await page.title(),'Hazels CTO Freemint — Yours, onchain.');
+ assert.equal(await page.getByText('MINT OPENS SOON',{exact:true}).count(),1);
+ assert.equal(await page.locator('vite-error-overlay').count(),0);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ await page.screenshot({path:'test-results/desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:'test-results/mobile.png',fullPage:true});
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ await page.getByText('Will every Hazel be different?',{exact:true}).click();assert.equal(await page.locator('details[open]').count(),1);
+ await page.getByRole('button',{name:'Connect wallet',exact:true}).first().click();await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);
+ await page.goto(web+'/deploy',{waitUntil:'networkidle'});await page.screenshot({path:'test-results/deploy-mobile.png',fullPage:true});
+ assert.equal(await page.getByRole('button',{name:'Deploy collection',exact:true}).isDisabled(),true);
+ await connect();await page.getByRole('button',{name:'Deploy collection',exact:true}).click();
+ await page.getByRole('alert').filter({hasText:'Request cancelled'}).waitFor();
+ const partial=await page.evaluate(()=>JSON.parse(localStorage.getItem('hazels-deployment-journal')));assert.equal(partial.chunks.length,1);assert.equal(partial.pending,undefined);
+ await page.reload({waitUntil:'networkidle'});await page.evaluate(()=>{window.rejectAt=-1;});await connect();
+ await page.getByRole('button',{name:'Resume deployment',exact:true}).click();
+ await page.getByRole('heading',{name:'Your collection is deployed.'}).waitFor({timeout:90000});
+ const journal=await page.evaluate(()=>JSON.parse(localStorage.getItem('hazels-deployment-journal')));
+ assert.equal(journal.chunks[0],partial.chunks[0]);assert.equal(journal.receipts.length,4);assert.equal(await page.evaluate(()=>window.fixtureSends),3);
+ address=journal.collection;const abi=JSON.parse(fs.readFileSync('src/generated/abi.json'));const c=new Contract(address,abi,provider);
+ assert.equal(await c.mintOpen(),false);
+ await page.getByRole('button',{name:'Read contract',exact:true}).click();await page.getByRole('button',{name:'Open minting',exact:true}).click();await page.getByRole('button',{name:'Pause minting',exact:true}).waitFor();assert.equal(await c.mintOpen(),true);
+ await page.setViewportSize({width:1440,height:1100});await page.screenshot({path:'test-results/deploy-desktop.png',fullPage:true});
+ await page.goto(web,{waitUntil:'networkidle'});await page.evaluate(user=>{window.switchFixtureAccount(user);window.rejectAt=-1;},userAddress);await connect();
+ await page.getByRole('button',{name:'Mint one more',exact:true}).click();await page.getByRole('button',{name:'Mint 2 Hazels',exact:true}).click();
+ await page.getByText('Your Hazels are minted. Welcome home.',{exact:false}).waitFor();assert.equal(await c.totalSupply(),2n);assert.equal(await c.mintedBy(userAddress),2n);
+ assert.equal(await page.getByRole('button',{name:'Wallet mint limit reached',exact:true}).isDisabled(),true);
+ await(await c.connect(user).transferFrom(userAddress,await buyer.getAddress(),1)).wait();
+ await page.reload({waitUntil:'networkidle'});await page.evaluate(user=>window.switchFixtureAccount(user),userAddress);await connect();await page.getByRole('button',{name:'Wallet mint limit reached',exact:true}).waitFor();
+ await page.evaluate(()=>window.switchFixtureChain('0x1'));await page.getByRole('button',{name:'Switch to Robinhood Chain',exact:true}).click();await page.getByRole('button',{name:'Wallet mint limit reached',exact:true}).waitFor();
+ await page.setViewportSize({width:320,height:800});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ await page.route('**/api/rpc',route=>route.fulfill({status:503,json:{error:'Fixture outage'}}));
+ await page.reload({waitUntil:'domcontentloaded'});await page.getByRole('alert').filter({hasText:'Live data is temporarily unavailable'}).waitFor();assert.equal(await page.getByText('NETWORK UNAVAILABLE',{exact:true}).count(),1);
+ assert.deepEqual(errors,[]);
+ const proof={environment:'Isolated local browser, Anvil and wallet fixture; no real funds or public transactions',checks:['desktop and 390/320px layout without overflow','no uncaught page errors','FAQ and keyboard dialog close','wallet discovery and account changes','treasury-gated deploy','cancel deployment after first confirmed chunk','reload and resume without duplicate artwork','exactly four deployment transactions','onchain bytecode and artwork verification','owner opens mint through studio','public page reads configured address and live state','free two-NFT mint through UI','lifetime cap stays used after transfer','wrong network prompt and recovery','RPC outage fails closed'],collectionAddress:address};
+ fs.writeFileSync('test-results/browser.json',JSON.stringify(proof,null,2));console.log(proof);
+}finally{await browser?.close();provider.destroy();vite.kill();anvil.kill();}

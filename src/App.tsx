@@ -1,156 +1,30 @@
-import { motion, useScroll, useTransform } from 'motion/react';
-import { DollarSign, ArrowRight, Github, Twitter, Globe } from 'lucide-react';
-import { useState } from 'react';
-import AbsurdBackground from './components/AbsurdBackground';
-import LaserEyesHero from './components/LaserEyesHero';
-import ContractAddress from './components/ContractAddress';
-import Tokenomics from './components/Tokenomics';
-import LiveIndexer from './components/LiveIndexer';
-import { t, Lang } from './translations';
-
-export default function App() {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  
-  const [lang, setLang] = useState<Lang>('en');
-  
-  const toggleLang = () => {
-    setLang(l => l === 'en' ? 'zh' : 'en');
-  };
-
-  return (
-    <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden selection:bg-yellow-400 selection:text-black">
-      {/* Background Gradient */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-900 via-black to-black opacity-90 z-0" />
-      
-      {/* Interactive Absurd Effect */}
-      <AbsurdBackground />
-
-      {/* Navigation */}
-      <nav className="relative z-50 p-6 flex justify-between items-center max-w-7xl mx-auto backdrop-blur-xl bg-black/40 rounded-b-[40px] border-x-4 border-b-4 border-yellow-400 shadow-[0_10px_30px_rgba(250,204,21,0.3)]">
-        <div className="flex items-center gap-2 font-black text-4xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-yellow-400 hover:scale-110 transition-transform cursor-pointer">
-          <DollarSign className="text-yellow-400" strokeWidth={4} size={36} />
-          MILLI
-        </div>
-        <div className="flex gap-4 items-center">
-          <motion.button
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleLang}
-            className="hidden sm:flex bg-gradient-to-r from-green-600 to-green-800 border-2 border-yellow-400 font-bold text-yellow-400 px-4 py-2 rounded-xl items-center gap-2 shadow-[0_0_15px_rgba(250,204,21,0.5)] uppercase"
-          >
-            <Globe size={18} />
-            {t[lang].langSwitch}
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleLang}
-            className="flex sm:hidden w-10 h-10 bg-gradient-to-r from-green-600 to-green-800 border-2 border-yellow-400 rounded-xl items-center justify-center text-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.5)]"
-          >
-            <Globe size={20} />
-          </motion.button>
-          
-          <motion.a 
-            whileHover={{ scale: 1.2, rotate: 15 }}
-            whileTap={{ scale: 0.9 }}
-            href="#" 
-            className="w-12 h-12 bg-black border-2 border-yellow-400 rounded-full flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors shadow-[0_0_15px_rgba(250,204,21,0.5)]"
-          >
-            <Twitter size={24} />
-          </motion.a>
-        </div>
-      </nav>
-
-      <main className="relative z-10">
-        {/* Hero Section */}
-        <section className="min-h-[90vh] flex flex-col items-center justify-center px-4 pt-4 pb-10 text-center">
-          
-          <div className="w-full mb-12 mt-4">
-            <LiveIndexer lang={lang} />
-          </div>
-
-          <LaserEyesHero />
-
-          <motion.h1 
-            initial={{ opacity: 0, scale: 0.5, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            className="text-7xl md:text-[12rem] font-black uppercase tracking-tighter mb-2"
-          >
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-yellow-200 via-yellow-400 to-yellow-600 drop-shadow-[0_10px_30px_rgba(250,204,21,0.8)]">
-              $MILLI
-            </span>
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-3xl md:text-5xl font-black text-green-400 mb-12 max-w-4xl drop-shadow-[0_0_15px_rgba(74,222,128,0.8)] uppercase"
-          >
-            {t[lang].subtitle}
-          </motion.p>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, type: "spring", stiffness: 300 }}
-            className="flex flex-col sm:flex-row gap-6 items-center w-full max-w-md mx-auto mb-10"
-          >
-            <motion.button
-              whileHover={{ scale: 1.1, rotate: -3 }}
-              whileTap={{ scale: 0.9 }}
-              animate={{
-                boxShadow: ["0 0 20px rgba(250,204,21,0.5)", "0 0 60px rgba(250,204,21,1)", "0 0 20px rgba(250,204,21,0.5)"]
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 text-black font-black text-2xl py-6 px-12 rounded-[40px] w-full flex items-center justify-center gap-3 border-4 border-white transition-all uppercase"
-            >
-              {t[lang].buyNow} <ArrowRight strokeWidth={4} size={32} />
-            </motion.button>
-          </motion.div>
-
-          <div className="w-full mt-10">
-            <ContractAddress lang={lang} />
-          </div>
-        </section>
-
-        {/* Marquee Banner */}
-        <div className="bg-yellow-400 text-black py-6 overflow-hidden rotate-[-3deg] scale-110 shadow-[0_0_50px_rgba(250,204,21,0.8)] relative z-20 border-y-8 border-green-600 mt-20">
-          <motion.div 
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            className="flex whitespace-nowrap gap-12 text-5xl font-black uppercase tracking-widest"
-          >
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-12">
-                <span className="drop-shadow-[0_5px_0_rgba(22,163,74,1)]">{t[lang].marquee1}</span>
-                <span className="text-6xl animate-bounce">🤑</span>
-                <span className="drop-shadow-[0_5px_0_rgba(22,163,74,1)]">{t[lang].marquee2}</span>
-                <span className="text-6xl animate-bounce">🚀</span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Tokenomics Section */}
-        <Tokenomics lang={lang} />
-
-        {/* Footer */}
-        <footer className="bg-black border-t-8 border-yellow-400 py-16 px-6 relative z-10 mt-20">
-          <div className="max-w-5xl mx-auto text-center">
-            <h2 className="text-6xl font-black text-yellow-400 mb-8 drop-shadow-[0_0_20px_rgba(250,204,21,0.5)]">$MILLI</h2>
-            <p className="text-green-300 font-bold text-lg md:text-xl leading-relaxed mb-10 max-w-3xl mx-auto uppercase">
-              {t[lang].footer}
-            </p>
-            <div className="text-green-600 font-black text-sm uppercase bg-green-950/50 inline-block px-6 py-3 rounded-full border border-green-800">
-              {t[lang].footerRights}
-            </div>
-          </div>
-        </footer>
-      </main>
-    </div>
-  );
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { ArrowUpRight, ArrowRight, ChevronDown, Flower2, Plus, Sparkles } from 'lucide-react';
+import { WalletProvider } from './lib/wallet';
+import { EXPLORER, REPO, shortAddress } from './lib/config';
+import { loadAddress } from './lib/collection';
+import WalletButton from './components/WalletButton';
+import MintPanel from './components/MintPanel';
+const DeployPage=lazy(()=>import('./components/DeployPage'));
+const gallery=[{id:1,name:'Denim daydream',tag:'DENIM OVERALLS'},{id:2,name:'Off the record',tag:'HEADPHONES'},{id:8,name:'A little edge',tag:'BIKER JACKET'},{id:19,name:'Silver lining',tag:'TWIN TAILS'},{id:144,name:'Rain check',tag:'RAINCOAT'},{id:888,name:'Soft rebellion',tag:'TWIN BUNS'}];
+const faqs=[
+ ['Is this really a free mint?','Yes. The mint price is 0 ETH. You only pay the network gas shown by your wallet. Each regular wallet can mint up to two NFTs in total, including NFTs it later transfers away.'],
+ ['Will every Hazel be different?','Each of the 5,555 tokens has a distinct combination of hairstyle, fringe, outfit, accessory, hair color and outfit color. The approved facial design stays consistent. Background and rarity add another layer of variation.'],
+ ['How does rarity work?','The full collection contains 4,166 Signature, 1,111 Rare and 278 Legendary editions. Rarity, character traits and the image are immutable and revealed immediately. Allocation follows a public, deterministic formula; this is not a hidden rarity draw.'],
+ ['Where is the artwork stored?','The SVG character layers are stored in immutable contracts. The renderer assembles the image and metadata entirely onchain. The website serves lightweight previews of the same artwork, but the NFT does not depend on an image database, IPFS or this website.'],
+ ['Which network and wallet do I need?','Use an EVM wallet on Robinhood Chain, chain ID 4663, with a little ETH for gas. On mobile, open this page inside your wallet browser.'],
+ ['What are the creator earnings?','The contract reports a 5% secondary-sale royalty payable to the treasury. It supports Creator Token transfer validation for enforcement through compatible marketplaces once a supported validator and marketplace policy have been configured. Free primary minting has no royalty charge.'],
+];
+function Collection(){
+ const [address,setAddress]=useState('');const [configError,setConfigError]=useState('');
+ useEffect(()=>{let live=true;loadAddress().then(a=>{if(live)setAddress(a);}).catch(()=>{if(live)setConfigError('The collection configuration could not be loaded. Please refresh.');});return()=>{live=false;};},[]);
+ return <main>
+  <section className="hero"><div className="hero-copy"><div className="eyebrow"><span className="tiny-cross">✳</span> A FREE MINT. A FRESH CHAPTER.</div><h1>A little different.<br/><span>Entirely yours.</span></h1><div className="hero-intro"><p>5,555 characters. One shared spirit.<br/>Meet Hazels CTO Freemint — a collection<br className="desktop-break"/> with its heart, and its art, onchain.</p><a className="round-arrow" href="#collection" aria-label="Explore the characters"><ArrowRight size={24}/></a></div><div className="hero-art"><div className="art-stamp"><Flower2 size={28}/><span>FOREVER<br/>ONCHAIN</span></div><figure className="hero-portrait portrait-left"><img src="/art/characters/19.webp" alt="Silver-haired Hazel with twin tails and a crossbody bag"/><figcaption>INDIVIDUALLY YOURS.</figcaption></figure><figure className="hero-portrait portrait-center"><img src="/art/characters/8.webp" alt="Hazel with twin buns and a biker jacket" fetchPriority="high"/><figcaption>HAZELS CTO / 5,555</figcaption></figure><figure className="hero-portrait portrait-right"><img src="/art/characters/888.webp" alt="Hazel with violet hair and denim overalls"/><figcaption>MADE TO STAY.</figcaption></figure><span className="art-caption">ONE FACE. THOUSANDS OF WAYS TO BE YOU.</span></div></div><div className="mint-column"><span className="handwritten">Your next chapter starts here ↘</span><MintPanel address={address}/>{configError?<p className="notice error" role="alert">{configError}</p>:null}<div className="mint-footnotes"><span><Plus size={13}/> Instant reveal</span><span><Plus size={13}/> Immutable SVG art</span></div></div></section>
+  <div className="collection-strip"><span>5,555 <small>ONE-OF-A-KIND COMBINATIONS</small></span><Flower2 size={22}/><span>0 ETH <small>MINT PRICE</small></span><Flower2 size={22}/><span>100% <small>ONCHAIN ART</small></span><Flower2 size={22}/><span>YOURS <small>FROM THE FIRST BLOCK</small></span></div>
+  <section className="collection-section" id="collection"><div className="section-heading"><div><span className="eyebrow">SAME SOUL. DIFFERENT ENERGY.</span><h2>A character for<br/><em>every side of you.</em></h2></div><p>New hair. A favorite jacket. A small detail that makes it yours. Every combination is composed from real SVG layers.</p></div><div className="gallery">{gallery.map(item=><figure className="gallery-card" key={item.id}><div className="gallery-image"><img src={`/art/characters/${item.id}.webp`} alt={`${item.name} — generated Hazel #${item.id}`} loading="lazy"/><span>#{String(item.id).padStart(4,'0')}</span></div><figcaption><strong>{item.name}</strong><small>{item.tag}</small></figcaption></figure>)}</div><div className="trait-totals"><span><strong>16 × 6</strong>Hair & fringe</span><span><strong>16</strong>Outfits</span><span><strong>12</strong>Accessories</span><span><strong>32</strong>Backdrops</span><span><strong>12 + 12</strong>Hair & outfit colors</span></div></section>
+  <section className="rarity-section" id="rarity"><div className="rarity-title"><span className="eyebrow">A FEW EXTRA SPARKS.</span><h2>Everyday magic.<br/><em>Extraordinary details.</em></h2><p>Three editions. A fixed place in the collection.<br/>Your traits are revealed the moment you mint.</p><a href="#mint" className="text-button">Find your Hazel <ArrowUpRight size={17}/></a></div><div className="rarity-cards">{[{name:'Signature',count:'4,166',p:'74.996%',cls:'signature',icon:'01'},{name:'Rare',count:'1,111',p:'20%',cls:'rare',icon:'02'},{name:'Legendary',count:'278',p:'5.004%',cls:'legendary',icon:'03'}].map(r=><div className={`rarity-card ${r.cls}`} key={r.name}><span>{r.icon} / EDITION</span><div className="rarity-symbol"><Sparkles size={46} strokeWidth={1}/></div><h3>{r.name}</h3><div><strong>{r.count}</strong><small>{r.p} of the collection</small></div></div>)}</div></section>
+  <section className="faq-section" id="details"><div><span className="eyebrow">GOOD TO KNOW.</span><h2>The little<br/><em>details.</em></h2><p>Simple mint. Lasting artwork.</p>{address?<a className="contract-link" href={`${EXPLORER}/address/${address}`} target="_blank" rel="noreferrer">Contract {shortAddress(address)} <ArrowUpRight size={14}/></a>:<span className="small muted">Contract address will appear after deployment.</span>}</div><div className="faq-list">{faqs.map(([q,a])=><details key={q}><summary>{q}<ChevronDown size={18}/></summary><p>{a}</p></details>)}</div></section>
+  <section className="closing"><Flower2 size={36}/><p>Make room for a little character.</p><a href="#mint">Find your Hazel <ArrowUpRight size={21}/></a></section>
+ </main>;
 }
+export default function App(){const deploy=window.location.pathname.replace(/\/$/,'')==='/deploy';return <WalletProvider><div className="site-shell"><header className="site-header"><a href="/" className="brand" aria-label="Hazels CTO home"><span className="brand-mark">H</span><span>hazels<small>CTO FREEMINT</small></span></a><nav aria-label="Main navigation"><a href="/#collection">The collection</a><a href="/#rarity">Rarity</a><a href="/#details">The details</a></nav><WalletButton/></header><Suspense fallback={<div className="page-loading" role="status">Opening collection studio…</div>}>{deploy?<DeployPage/>:<Collection/>}</Suspense><footer><a className="footer-brand" href="/">hazels<span>CTO FREEMINT</span></a><span>Art with a home on Robinhood Chain.</span><div><a href={REPO} target="_blank" rel="noreferrer">Source ↗</a><a href="/deploy">Deploy studio ↗</a></div></footer></div></WalletProvider>;}
