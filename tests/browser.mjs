@@ -7,6 +7,8 @@ import { chromium as playwright } from '@playwright/test';
 import lambdaChromium from '@sparticuz/chromium';
 import { JsonRpcProvider, Contract, parseEther, toBeHex } from 'ethers';
 const require=createRequire(import.meta.url);
+const manifest=JSON.parse(fs.readFileSync('public/deployment/art.json'));
+const deploymentTransactions=manifest.art.flatMap(a=>a.chunks).length+2;
 const treasury='0x9d4B1bDF276a2B30F9FA95DB3beC0b40477c2941';
 const port=async()=>{const s=net.createServer();await new Promise(r=>s.listen(0,'127.0.0.1',r));const p=s.address().port;await new Promise(r=>s.close(r));return p;};
 const [rpcPort,webPort]=await Promise.all([port(),port()]);
@@ -59,16 +61,16 @@ try{
  const partial=await page.evaluate(()=>JSON.parse(localStorage.getItem('hazels-deployment-journal')));assert.equal(partial.chunks.length,1);assert.equal(partial.pending,undefined);
  await page.reload({waitUntil:'networkidle'});await page.evaluate(()=>{window.rejectAt=-1;});await connect();
  await page.getByRole('button',{name:'Resume deployment',exact:true}).click();
- await page.getByRole('heading',{name:'Your collection is deployed.'}).waitFor({timeout:90000});
+ await page.getByRole('heading',{name:'Your collection is deployed.'}).waitFor({timeout:240000});
  const journal=await page.evaluate(()=>JSON.parse(localStorage.getItem('hazels-deployment-journal')));
- assert.equal(journal.chunks[0],partial.chunks[0]);assert.equal(journal.receipts.length,4);assert.equal(await page.evaluate(()=>window.fixtureSends),3);
+ assert.equal(journal.chunks[0],partial.chunks[0]);assert.equal(journal.receipts.length,deploymentTransactions);assert.equal(await page.evaluate(()=>window.fixtureSends),deploymentTransactions-1);
  address=journal.collection;const abi=JSON.parse(fs.readFileSync('src/generated/abi.json'));const c=new Contract(address,abi,provider);
  assert.equal(await c.mintOpen(),false);
  await page.getByRole('button',{name:'Read contract',exact:true}).click();await page.getByRole('button',{name:'Open minting',exact:true}).click();await page.getByRole('button',{name:'Pause minting',exact:true}).waitFor();assert.equal(await c.mintOpen(),true);
  await page.setViewportSize({width:1440,height:1100});await page.screenshot({path:'test-results/deploy-desktop.png',fullPage:true});
  await page.goto(web,{waitUntil:'networkidle'});await page.evaluate(user=>{window.switchFixtureAccount(user);window.rejectAt=-1;},userAddress);await connect();
  await page.getByRole('button',{name:'Mint one more',exact:true}).click();await page.getByRole('button',{name:'Mint 2 Hazels',exact:true}).click();
- await page.getByText('Your Hazels are minted. Welcome home.',{exact:false}).waitFor();assert.equal(await c.totalSupply(),2n);assert.equal(await c.mintedBy(userAddress),2n);
+ await page.getByText('Your Hazels are minted. Welcome home.',{exact:false}).waitFor();assert.equal(await c.totalSupply(),2n);const metadataURI=await c.tokenURI(1);const decoded=await page.evaluate(async uri=>{const m=await(await fetch(uri)).json();const image=new Image();image.src=m.image;await image.decode();return {name:m.name,width:image.naturalWidth,height:image.naturalHeight};},metadataURI);assert.deepEqual(decoded,{name:'Hazels CTO Freemint #1',width:724,height:724});assert.equal(await c.mintedBy(userAddress),2n);
  assert.equal(await page.getByRole('button',{name:'Wallet mint limit reached',exact:true}).isDisabled(),true);
  await(await c.connect(user).transferFrom(userAddress,await buyer.getAddress(),1)).wait();
  await page.reload({waitUntil:'networkidle'});await page.evaluate(user=>window.switchFixtureAccount(user),userAddress);await connect();await page.getByRole('button',{name:'Wallet mint limit reached',exact:true}).waitFor();
@@ -77,6 +79,6 @@ try{
  await page.route('**/api/rpc',route=>route.fulfill({status:503,json:{error:'Fixture outage'}}));
  await page.reload({waitUntil:'domcontentloaded'});await page.getByRole('alert').filter({hasText:'Live data is temporarily unavailable'}).waitFor();assert.equal(await page.getByText('NETWORK UNAVAILABLE',{exact:true}).count(),1);
  assert.deepEqual(errors,[]);
- const proof={environment:'Isolated local browser, Anvil and wallet fixture; no real funds or public transactions',checks:['desktop and 390/320px layout without overflow','no uncaught page errors','FAQ and keyboard dialog close','wallet discovery and account changes','treasury-gated deploy','cancel deployment after first confirmed chunk','reload and resume without duplicate artwork','exactly four deployment transactions','onchain bytecode and artwork verification','owner opens mint through studio','public page reads configured address and live state','free two-NFT mint through UI','lifetime cap stays used after transfer','wrong network prompt and recovery','RPC outage fails closed'],collectionAddress:address};
+ const proof={deploymentTransactions,environment:'Isolated local browser, Anvil and wallet fixture; no real funds or public transactions',checks:['desktop and 390/320px layout without overflow','no uncaught page errors','FAQ and keyboard dialog close','wallet discovery and account changes','treasury-gated deploy','cancel deployment after first confirmed chunk','reload and resume without duplicate artwork',`${deploymentTransactions} deployment transactions; no duplicate chunks`,'onchain bytecode and artwork verification','owner opens mint through studio','public page reads configured address and live state','free two-NFT mint through UI','lifetime cap stays used after transfer','wrong network prompt and recovery','RPC outage fails closed'],collectionAddress:address};
  fs.writeFileSync('test-results/browser.json',JSON.stringify(proof,null,2));console.log(proof);
 }finally{await browser?.close();provider.destroy();vite.kill();anvil.kill();}

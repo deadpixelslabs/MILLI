@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "file": "art/approved/01-ink-hoodie.svg",
+      "sha256": "ca748e822261cd0e6f464489c9913bcef5bd767a1ee2403cb7dbcf897b2a4938",
+      "svgPaths": 2684,
+      "pixelIdenticalTokenId": 1
+    },
+    {
+      "file": "art/approved/02-indigo-denim.svg",
+      "sha256": "2f33d443611d904909442d6c2d7220fa80fec0185483746bdd9d899320a9bfb0",
+      "svgPaths": 3306,
+      "pixelIdenticalTokenId": 2
+    },
+    {
+      "file": "art/approved/03-braided-leather.svg",
+      "sha256": "d33b3358d8dcd675746e7ff9375639fda5b5743f7afc248eb642f005fbd16881",
+      "svgPaths": 4048,
+      "pixelIdenticalTokenId": 3
+    }
+  ],
+  "geometry": "All original path data retained, including palette variations",
+  "compositions": 5555,
+  "uniquenessIncludes": [
+    "illustrated look",
+    "hair palette",
+    "outfit palette",
+    "background"
+  ],
+  "checks": [
+    "Original #1/#2/#3 raw RGBA pixels equal approved SVG source renders",
+    "EVM metadata image strings equal website SVG generator",
+    "Native browser fetch decodes metadata and renders 724x724 SVG",
+    "No raster images, external hrefs, scripts or foreignObject in canonical SVG"
+  ]
+}

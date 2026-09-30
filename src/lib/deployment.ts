@@ -2,7 +2,7 @@ import { Contract, ContractFactory, keccak256, ZeroAddress, type JsonRpcApiProvi
 import { CHAIN_ID, TREASURY, sameAddress } from './config';
 import { abi } from './collection';
 type Chunk={initCode:string;codeHash:string;bytes:number};
-export type Manifest={manifestHash:string;art:{name:string;compressedBytes:number;chunks:Chunk[]}[]};
+export type Manifest={manifestHash:string;art:{name:string;storedBytes:number;chunks:Chunk[]}[]};
 type Artifact={abi:any[];bytecode:string;deployedBytecode:string;immutableReferences:Record<string,{start:number;length:number}[]>};
 export type Artifacts={HazelsRenderer:Artifact;HazelsCTOFreemint:Artifact};
 export type Journal={chainId:number;deployer:string;manifestHash:string;chunks:string[];renderer:string;collection:string;receipts:string[];pending?:{hash:string;kind:'chunk'|'renderer'|'collection';index:number}};

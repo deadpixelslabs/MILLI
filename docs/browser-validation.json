@@ -1,4 +1,5 @@
 {
+  "deploymentTransactions": 86,
   "environment": "Isolated local browser, Anvil and wallet fixture; no real funds or public transactions",
   "checks": [
     "desktop and 390/320px layout without overflow",
@@ -8,7 +9,7 @@
     "treasury-gated deploy",
     "cancel deployment after first confirmed chunk",
     "reload and resume without duplicate artwork",
-    "exactly four deployment transactions",
+    "86 deployment transactions; no duplicate chunks",
     "onchain bytecode and artwork verification",
     "owner opens mint through studio",
     "public page reads configured address and live state",
@@ -17,5 +18,5 @@
     "wrong network prompt and recovery",
     "RPC outage fails closed"
   ],
-  "collectionAddress": "0xc41170495E30aFCD219153FB028ce7Ab415b7043"
+  "collectionAddress": "0x696e036F3120731F2cf057A101cc0B591410b862"
 }

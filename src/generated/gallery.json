@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Ink hoodie",
+    "tag": "OVERSIZED HOODIE",
+    "alt": "Hazel #1, Twin buns and long layers, Oversized hoodie"
+  },
+  {
+    "id": 2,
+    "name": "Indigo denim",
+    "tag": "DENIM OVERALLS",
+    "alt": "Hazel #2, High ponytail, Denim overalls"
+  },
+  {
+    "id": 3,
+    "name": "Braided leather",
+    "tag": "LEATHER JACKET",
+    "alt": "Hazel #3, Side braid, Leather jacket"
+  },
+  {
+    "id": 8,
+    "name": "Braided leather",
+    "tag": "LEATHER JACKET",
+    "alt": "Hazel #8, Side braid, Leather jacket"
+  },
+  {
+    "id": 19,
+    "name": "Ink hoodie",
+    "tag": "OVERSIZED HOODIE",
+    "alt": "Hazel #19, Twin buns and long layers, Oversized hoodie"
+  },
+  {
+    "id": 144,
+    "name": "Indigo denim",
+    "tag": "DENIM OVERALLS",
+    "alt": "Hazel #144, High ponytail, Denim overalls"
+  }
+]

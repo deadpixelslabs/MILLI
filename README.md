@@ -33,7 +33,7 @@ For another static host, route `/deploy` to `index.html` and set `VITE_READ_RPC_
 ## Deploy the collection
 
 1. Open `/deploy` and connect the treasury wallet on chain **4663** with ETH for deployment gas.
-2. Click **Deploy collection**. Approve **4 deployment transactions**: two immutable artwork data contracts, the SVG renderer, and the NFT collection. Artwork hashes and contract runtime bytecode are checked before continuing.
+2. Click **Deploy collection**. Approve the deployment transactions shown in the studio: **84 immutable artwork data contracts, the SVG renderer, and the NFT collection (86 total)**. The full approved illustrations contain over 10,000 SVG paths; their storage is intentionally not replaced by simplified drawings. Each artwork transaction stores up to 24 KB. Artwork hashes and contract runtime bytecode are checked before continuing.
 3. Progress is saved after each transaction. Export the progress JSON as a backup. Resume with the same build, chain and wallet. A pending transaction is checked before another transaction is sent. Do not replace deployment transactions with unrelated transactions.
 4. Download `site-config.json`. Replace **`public/site-config.json`** in this repository and publish the website. Alternatively set `VITE_COLLECTION_ADDRESS` and rebuild. A browser's local storage never configures the public website.
 5. In the studio, read the deployed collection and click **Open minting**. This is a separate owner transaction. Minting is closed by default.
@@ -43,25 +43,35 @@ No private key is entered into the site. All transactions are signed in the conn
 
 ## Artwork and rarity
 
-The approved facial design is preserved as vector geometry. New modular layers provide **16 back hairstyles × 6 fringes, 16 outfits, 12 accessories, 12 hair colors, 12 outfit colors and 32 backgrounds**. The generator assigns **5,555 unique character tuples**, excluding background, token number and rarity from the uniqueness check. This is a shared-face generative collection, not 5,555 separately illustrated faces.
+The **three approved illustrations are retained in full**: twin buns with the ink hoodie, high ponytail with indigo denim, and side braid with the leather jacket. Every original path, face, strand, clothing fold and accessory remains intact. Token IDs **1, 2 and 3** render pixel-identically to the approved source SVGs. The prior hand-drawn replacement layers and NFT borders have been removed.
+
+Variations use **12 hair palettes, 16 outfit palettes and 32 background settings**. Palette zero preserves the source colors. Hair, outfit and accessory silhouettes remain coupled within the three approved illustrations; this build does **not** claim 16 separately illustrated garments or 96 hairstyles. There are **5,555 distinct complete compositions**, including backgrounds in the uniqueness check. Token numbers and edition labels do not contribute to uniqueness.
+
+Palette annotations never change vector geometry. They tint existing material paths while retaining shading; no image-generation service or database is used at mint time.
 
 Fixed edition counts across the complete supply:
 
-| Edition | Supply | Finish |
-| --- | ---: | --- |
-| Signature | 4,166 | Warm ivory |
-| Rare | 1,111 | Gold |
-| Legendary | 278 | Iridescent |
+| Edition | Supply |
+| --- | ---: |
+| Signature | 4,166 |
+| Rare | 1,111 |
+| Legendary | 278 |
+
+Edition is metadata only. It does not add a frame or badge to the approved artwork.
 
 Allocation uses a public deterministic permutation. **Upcoming traits are predictable**. There is no hidden reveal, oracle randomness, rarity lottery, reroll or owner seed setter. Counts refer to the full collection; a partially minted collection may have a different distribution.
 
-- `scripts/character-art.mjs`: original modular SVG layers, preview renderer and deterministic traits.
-- `art/approved-face.svg`: registered crop of the approved facial artwork. `art/references/` preserves the art direction references.
-- `scripts/prepare-art.mjs`: individually compresses and commits each layer to immutable artwork data.
-- `scripts/generate-renderer.mjs`: generates Solidity renderer source from the same palette/name definitions.
-- `npm run art`: regenerates the committed artwork manifest and renderer source. Rebuild and rerun tests after any artwork change. Do not change a build midway through deployment.
+- `art/approved/`: the exact approved source illustrations, with recorded SHA-256 checksums.
+- `art/regions.json`: material palette annotations bound to those source hashes.
+- `scripts/classify-art.py`: optional region-authoring helper (`picosvg==0.22.3`). It changes annotations, never source geometry. Normal builds need only Node.
+- `scripts/character-art.mjs`: deterministic assignments and the website SVG renderer.
+- `scripts/prepare-art.mjs`: stores pre-encoded SVG bodies and palette tables in immutable data chunks, with per-chunk code hashes.
+- `scripts/generate-renderer.mjs`: generates the Solidity renderer from the same trait definitions.
+- `npm run art`: regenerates the artwork manifest and renderer source. Do not change a build midway through deployment.
 
-Canonical images are returned by `tokenURI` as onchain JSON and SVG data URIs. Website WebP thumbnails are generated from the exact same SVG renderer; they are previews, not the canonical NFT image. Tests compare SVG strings returned by the EVM against the website generator.
+Canonical metadata is a `data:application/json;utf8,` URI. Its `image` is a self-contained `data:image/svg+xml;base64,` URI assembled from the selected immutable artwork body and onchain palette styles. Base64 segment boundaries are padded to whole three-byte groups. JSON escapes `#` as `\u0023` so the outer data URI has no URL fragment. This avoids decompressing and double-encoding an entire detailed illustration every time a marketplace reads metadata.
+
+Website WebP thumbnails are generated from the exact same SVG output. Tests compare decoded EVM image strings with the website generator, check all 5,555 assignments, compare all three original renders pixel-for-pixel, and load the real data URIs in a browser. No public-chain deployment or marketplace indexing is claimed by these local checks.
 
 ## Creator earnings enforcement
 

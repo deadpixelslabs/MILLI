@@ -81,7 +81,19 @@ contract HazelsCTOFreemint is ERC721, ERC2981, Ownable2Step, ReentrancyGuard, IC
     }
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         _requireOwned(tokenId);
-        return renderer.tokenURI(tokenId);
+        // Forward the immutable renderer's ABI response once. Decoding and
+        // re-encoding the full SVG would duplicate large buffers unnecessarily.
+        address target = address(renderer);
+        assembly ("memory-safe") {
+            let ptr := mload(0x40)
+            mstore(ptr, shl(224, 0xc87b56dd)) // tokenURI(uint256)
+            mstore(add(ptr, 4), tokenId)
+            let ok := staticcall(gas(), target, ptr, 36, 0, 0)
+            let size := returndatasize()
+            returndatacopy(ptr, 0, size)
+            if iszero(ok) { revert(ptr, size) }
+            return(ptr, size)
+        }
     }
     function supportsInterface(bytes4 id) public view override(ERC721, ERC2981) returns (bool) {
         return id == type(ICreatorToken).interfaceId || super.supportsInterface(id);

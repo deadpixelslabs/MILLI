@@ -11,6 +11,7 @@
   "svgMatchesWebsite": [
     1,
     2,
+    3,
     8,
     19,
     144,
@@ -18,8 +19,10 @@
     2345,
     5555
   ],
-  "deploymentGas": "11617420",
-  "tokenURIGas": "5412495",
+  "deploymentGas": "446512110",
+  "rendererTokenURIGas": "13824518",
+  "collectionTokenURIGas": "15403574",
+  "deploymentTransactions": 86,
   "treasuryTwoMintGas": "98904",
   "checks": [
     "lifetime wallet limit survives transfers",
@@ -35,6 +38,6 @@
     "mint exempt from transfer validator",
     "immutable data hash checks",
     "SVG metadata decodes without external assets",
-    "all 5555 trait tuples unique without backgrounds"
+    "all 5555 visible compositions unique; backgrounds included"
   ]
 }
