@@ -12,7 +12,7 @@ const server = http.createServer((req,res)=>{
  const url=new URL(req.url,'http://localhost');
  res.status=n=>{res.statusCode=n;return res;};res.send=b=>res.end(b);res.json=j=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(j));};
  if(url.pathname.startsWith('/metadata/')){req.query={id:url.pathname.slice(10)};return metadataHandler(req,res);}
- if(url.pathname.startsWith('/images/')){req.query={id:url.pathname.slice(8)};return imageHandler(req,res);}
+ if(url.pathname.startsWith('/images/')){req.query={id:url.pathname.split('/').at(-1)};return imageHandler(req,res);}
  if(url.pathname==='/downloads/Hazels-CTO-Freemint-Metadata.csv')return csvHandler(req,res);
  let name=['/','/deploy'].includes(url.pathname)?'/index.html':url.pathname;
  const file=path.resolve('dist','.'+name);
@@ -28,17 +28,17 @@ try{
  const page=await browser.newPage({viewport:{width:1440,height:1080}}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base);await page.getByRole('heading',{name:'Your story. Your Hazel.'}).waitFor();
- assert.equal(await page.getByRole('link',{name:'Mint on OpenSea',exact:true}).first().getAttribute('href'),'https://opensea.io/collection/hazels-cto-freemint/overview');
+ assert.equal(await page.getByRole('link',{name:'View on OpenSea',exact:true}).first().getAttribute('href'),'https://opensea.io/collection/hazels-cto-freemint/overview');
  assert.equal(await page.getByRole('button',{name:'Connect wallet',exact:true}).count(),0);
  await page.locator('.panel-front img').evaluate(i=>i.decode());
  fs.mkdirSync('test-results',{recursive:true});await page.screenshot({path:'test-results/anime-desktop.png',fullPage:true});
  for(const width of [390,320]){await page.setViewportSize({width,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth),false);}
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'test-results/anime-mobile.png',fullPage:true});
- await page.getByText('Where do I mint?',{exact:true}).click();assert.equal(await page.locator('details[open]').count(),1);
+ await page.getByText('Where can I find the collection?',{exact:true}).click();assert.equal(await page.locator('details[open]').count(),1);
  await page.setViewportSize({width:1440,height:1080});
  await page.goto(base+'/deploy');await page.getByRole('heading',{name:'One Base URI.'}).waitFor();
  assert.equal(await page.getByRole('button',{name:'Deploy collection',exact:true}).count(),0);
- for(const id of [1,2,3,144,2345,5555]){
+ for(const id of [1,2,3,4,5,6,7,8,9,144,2345,5555]){
   const r=await page.request.get(base+'/metadata/'+id);assert.equal(r.status(),200);
   const m=await r.json();assert.equal(m.name,`Hazels CTO Freemint #${id}`);
   const dims=await page.evaluate(async url=>{const i=new Image();i.src=url;await i.decode();return [i.naturalWidth,i.naturalHeight];},base+'/images/'+id+'.svg');

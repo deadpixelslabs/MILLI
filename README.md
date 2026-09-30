@@ -36,7 +36,7 @@ After creating the drop, set `openseaUrl` in `public/site-config.json` to its HT
 
 ## Artwork
 
-The approved three illustrations retain all original vector geometry: twin buns with an ink hoodie, high ponytail with denim, and side braid with a leather jacket. IDs 1, 2 and 3 match the original SVGs. Other tokens combine 12 hair palettes, 16 clothing palettes and 32 background settings. There are 5,555 distinct complete compositions, including background variation. These are three illustrated looks with color variations, not 5,555 separately drawn character geometries.
+Nine illustrated looks provide nine hairstyle and outfit designs. The original three remain unchanged at IDs 1–3. Six added designs introduce bob/bomber, fringe/varsity, wolf cut/blazer, low ponytail/cardigan, waves/utility vest and high bun/windbreaker. Hair and outfits are paired within each illustrated look. Six optional pin shapes and eight background motifs vary independently. The six new illustrations retain their authored hair and garment colors; palette changes apply to the original three looks. Background colors, motifs and pins vary across all nine. All 5,555 assignments are deterministic; Edition labels and their counts are retained. This expanded artwork updates the existing hosted collection without changing token IDs or ownership. OpenSea must reindex metadata to display the revised images; image URLs now use `/images/expanded/`.
 
 Edition counts: **4,166 Signature**, **1,111 Rare**, **278 Legendary**. Edition labels are metadata only; they do not add frames or alter artwork.
 

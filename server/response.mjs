@@ -4,7 +4,7 @@ export function sendAsset(req, res, body, contentType) {
   const etag = '"' + createHash('sha256').update(body).digest('hex') + '"';
   res.setHeader('Content-Type', contentType);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=86400, stale-while-revalidate=604800');
+  res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=60, must-revalidate');
   res.setHeader('ETag', etag);
   res.setHeader('X-Content-Type-Options', 'nosniff');
   if (req.headers?.['if-none-match'] === etag) return res.status(304).end();

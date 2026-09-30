@@ -18,8 +18,8 @@ test('all 5555 metadata records and unique SVGs use matching token IDs', () => {
   for (let id = 1; id <= 5555; id++) {
     const m = metadata(id);
     assert.equal(m.name, `Hazels CTO Freemint #${id}`);
-    assert.equal(m.image, `https://milliformillion.xyz/images/${id}.svg`);
-    assert.equal(m.attributes.length, 8);
+    assert.equal(m.image, `https://milliformillion.xyz/images/expanded/${id}.svg`);
+    assert.equal(m.attributes.length, 10);
     counts[m.attributes.at(-1).value]++;
     images.add(createHash('sha256').update(render(id)).digest('hex'));
   }

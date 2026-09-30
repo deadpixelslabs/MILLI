@@ -2,19 +2,64 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    {"source": "/downloads/Hazels-CTO-Freemint-Metadata.csv", "destination": "/api/csv"},
-    {"source": "/metadata/:id", "destination": "/api/metadata?id=:id"},
-    {"source": "/images/:id", "destination": "/api/image?id=:id"},
-    {"source": "/deploy", "destination": "/index.html"}
+    {
+      "source": "/downloads/Hazels-CTO-Freemint-Metadata.csv",
+      "destination": "/api/csv"
+    },
+    {
+      "source": "/metadata/:id",
+      "destination": "/api/metadata?id=:id"
+    },
+    {
+      "source": "/images/expanded/:id",
+      "destination": "/api/image?id=:id"
+    },
+    {
+      "source": "/images/:id",
+      "destination": "/api/image?id=:id"
+    },
+    {
+      "source": "/deploy",
+      "destination": "/index.html"
+    }
   ],
   "functions": {
-    "api/csv.ts": {"includeFiles": "art/**"},
-    "api/metadata.ts": {"includeFiles": "art/**"},
-    "api/image.ts": {"includeFiles": "art/**"}
+    "api/csv.ts": {
+      "includeFiles": "art/**"
+    },
+    "api/metadata.ts": {
+      "includeFiles": "art/**"
+    },
+    "api/image.ts": {
+      "includeFiles": "art/**"
+    }
   },
-  "headers": [{"source": "/(.*)", "headers": [
-    {"key":"X-Content-Type-Options","value":"nosniff"},
-    {"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"},
-    {"key":"X-Frame-Options","value":"DENY"}
-  ]},{"source":"/site-config.json","headers":[{"key":"Cache-Control","value":"no-store"}]}]
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    },
+    {
+      "source": "/site-config.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
+  ]
 }
