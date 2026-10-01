@@ -1,18 +1,18 @@
 {
-  "name": "hazels-cto-freemint",
+  "name": "milli-for-million",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 3000",
     "art": "node scripts/character-art.mjs && node scripts/prepare-art.mjs && node scripts/generate-renderer.mjs",
     "contracts": "node scripts/compile.mjs",
-    "build": "node scripts/preview-art.mjs && tsc --noEmit && vite build",
+    "build": "node scripts/build-milli.mjs && node scripts/milli-social.mjs && tsc --noEmit && vite build",
     "export:collection": "node scripts/export-collection.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "lint": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/art.test.mjs tests/metadata.test.mjs",
+    "test": "node --experimental-strip-types --test tests/art.test.mjs tests/metadata.test.mjs tests/milli.test.mjs",
     "test:onchain": "npm run art && npm run contracts && node --test tests/contracts.test.mjs",
-    "test:browser": "node --experimental-strip-types tests/metadata-browser.mjs"
+    "test:browser": "node --experimental-strip-types tests/milli-browser.mjs"
   },
   "dependencies": {
     "ethers": "6.17.0",

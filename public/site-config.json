@@ -1,5 +1,11 @@
 {
-  "chainId": 4663,
-  "collectionAddress": "0x06886656be382935137ad4E8B9Ef75194BD5bD03",
-  "openseaUrl": "https://opensea.io/collection/hazels-cto-freemint/overview"
+  "collectionName": "Milli For Million",
+  "chainId": 1,
+  "chainName": "Ethereum",
+  "currency": "ETH",
+  "supply": 10000,
+  "collectionAddress": null,
+  "openseaUrl": null,
+  "mintStatus": "coming-soon",
+  "baseURI": "https://www.milliformillion.xyz/milli/metadata/"
 }

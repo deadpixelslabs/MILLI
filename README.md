@@ -1,55 +1,52 @@
-# Hazels CTO Freemint
+# MILLI — Milli For Million
 
-5,555 detailed SVG portraits, a Vercel metadata server, and a collection website. Deploy the NFT contract through OpenSea; this project serves the artwork and metadata for instant reveal.
+A collection of **10,000 original pixel Doges**, launching on **Ethereum mainnet (chain ID 1)**. The public website, gallery, branding and metadata studio are dedicated to MILLI.
 
-## Base URI
+## Production endpoints
 
-```
-https://milliformillion.xyz/metadata/
-```
+- Website: https://www.milliformillion.xyz/
+- Metadata studio: https://www.milliformillion.xyz/deploy
+- **Base URI:** `https://www.milliformillion.xyz/milli/metadata/`
+- JSON: `/milli/metadata/1` or `/milli/metadata/1.json`, through token 10000.
+- Images: `/milli/images/1.png`, through `/milli/images/10000.png`.
+- Metadata CSV: `/milli/downloads/metadata.csv`.
 
-Keep the trailing slash. The contract appends token IDs **1 through 5555**. Both `/metadata/1` and `/metadata/1.json` return JSON. The corresponding image is `/images/1.svg`.
+The Base URI must retain its trailing slash. The source token IDs run from **1 to 10000**. Images and metadata are hosted on this domain and are public before minting. This is not onchain image storage.
 
-- Studio and copy button: `/deploy`
-- CSV: `/downloads/Hazels-CTO-Freemint-Metadata.csv`
-- Metadata example: `/metadata/1`
-- SVG example: `/images/1.svg`
-- Last token: `/metadata/5555`
+## Source artwork and traits
 
-Metadata is available immediately and is public for all 5,555 IDs before minting. This is not a hidden rarity draw. The contract must return this Base URI for minted tokens instead of an unrevealed placeholder. Marketplace indexing can still take time.
+Artwork and metadata were imported from `milli-for-million-10000.zip`. The second supplied archive is byte-identical. Source SHA-256: `8573c606ea28e762a85021c69251fd486f21eba81bc3a897a46c97edb0b8b963`.
 
-**Artwork is hosted, not onchain.** Keep the domain and Vercel deployment available. The images do not depend on a database: each is reproduced byte-for-byte from the approved SVG paths and fixed palette assignments, with CDN caching. Every image is standalone SVG with no external fonts, images or scripts.
+All 10,000 decoded RGBA images and all 10,000 trait combinations are unique. Original images, names, token assignments and the six attribute categories are preserved. Placeholder IPFS image addresses are replaced with the actual hosted PNG URLs.
 
-## Collection settings
+| Category | Variants |
+| --- | ---: |
+| Background | 6 |
+| Doge Fur & Base | 7 |
+| Outfit & Neckwear | 8 |
+| Mouth & Snout Traits | 7 |
+| Eyes & Visors | 6 |
+| Headwear & Mohawk | 8 |
 
-Configure these in OpenSea when deploying and scheduling the drop:
+Counts include the original `None` options. The explorer filters all six categories, searches by ID/name/trait, and displays exact collection frequencies. It does not invent rarity rankings.
 
-- Name: **Hazels CTO Freemint**. Symbol: **HAZELS**.
-- Supply: **5,555**. Planned public mint price: **0 ETH**, network gas applies.
-- Planned public wallet limit: **2**.
-- Treasury: **0x9d4B1bDF276a2B30F9FA95DB3beC0b40477c2941**.
-- Planned creator earnings: **5%**, with enforcement configured in OpenSea Studio.
+## Hosting implementation
 
-The metadata server does not enforce mint limits, treasury allocations, payments or royalties. These belong to the deployed contract and OpenSea settings. Treasury allocation needs to be configured there; the prior custom-contract treasury exemption is not automatically applied by this server.
+`collection/milli/` stores a lossless tile dictionary, per-token tile indices, source metadata and a manifest. At build time `scripts/build-milli.mjs` reconstructs all PNGs and verifies every token's original pixel SHA-256. The PNGs are then served as static CDN files; no image reconstruction or database is required per request. This changes PNG compression only, not image pixels.
 
-After creating the drop, set `openseaUrl` in `public/site-config.json` to its HTTPS OpenSea URL to enable the website's collection link. Do not connect an OpenSea contract to the former custom-contract mint function.
+MILLI metadata endpoints read the small compressed metadata bundle. They validate token IDs, support GET/HEAD, return JSON 404s for invalid IDs and provide conditional ETag responses. The CSV endpoint reflects the same source records. Neither endpoint uses a private key or RPC.
 
-## Artwork
+## Launch configuration
 
-Nine illustrated looks provide nine hairstyle and outfit designs. The original three remain unchanged at IDs 1–3. Six added designs introduce bob/bomber, fringe/varsity, wolf cut/blazer, low ponytail/cardigan, waves/utility vest and high bun/windbreaker. Hair and outfits are paired within each illustrated look. Six optional pin shapes and eight background motifs vary independently. The six new illustrations retain their authored hair and garment colors; palette changes apply to the original three looks. Background colors, motifs and pins vary across all nine. All 5,555 assignments are deterministic; Edition labels and their counts are retained. This expanded artwork updates the existing hosted collection without changing token IDs or ownership. OpenSea must reindex metadata to display the revised images; image URLs now use `/images/expanded/`.
+`public/site-config.json` sets Ethereum chain ID 1, supply 10000 and the MILLI Base URI. The Ethereum collection address, official mint destination, mint price, launch date and wallet limits have **not been supplied**. The website therefore says **coming soon**, without a wallet connection or an active mint button. Configure the actual Ethereum collection separately before announcing minting as live. Existing Robinhood contract addresses are not Ethereum deployment addresses.
 
-Edition counts: **4,166 Signature**, **1,111 Rare**, **278 Legendary**. Edition labels are metadata only; they do not add frames or alter artwork.
+## Compatibility for already-minted NFTs
 
-- `art/approved/`: approved SVG originals.
-- `art/regions.json`: material classifications bound to source checksums.
-- `scripts/character-art.mjs`: fixed artwork generator and trait assignments.
-- `server/metadata.mjs`: metadata and CSV definitions.
-- `api/image.ts`, `api/metadata.ts`, `api/csv.ts`: Vercel endpoints.
-- `scripts/export-collection.mjs`: produces all 5,555 individual SVG and JSON files for backup/export.
+The older Hazels website is no longer displayed. Its already-minted tokens still reference `/metadata/:id` and `/images/...`. Those endpoints and the corresponding artwork generator are retained for token owners. They do not serve MILLI metadata. The public MILLI interface has no Hazels or Robinhood links.
 
-## Build and publish
+Archived Solidity/deployment utilities in this repository belong to the previous collection and are not the MILLI Ethereum deployment flow. They are not executed by the website or standard build.
 
-Node 22 or newer:
+## Development and checks
 
 ```sh
 npm ci
@@ -58,18 +55,4 @@ npm test
 npm run test:browser
 ```
 
-Push to the existing Vercel-linked main branch. `vercel.json` includes approved artwork in the serverless functions and routes `/images/`, `/metadata/` and the CSV download. The server requires no wallet, RPC, database, private key or collection address to serve metadata.
-
-`RPC_URL` is only used by the separate read-only RPC proxy retained in this repository. Do not put private RPC keys in public `VITE_` variables.
-
-Generate the full export with:
-
-```sh
-npm run export:collection -- /absolute/output/directory
-```
-
-The export contains `images/1.svg` through `images/5555.svg`, matching JSON files, metadata rows and a SHA-256 manifest. A complete uncompressed SVG export is about 2.9 GB; the hosted server stores only the shared artwork and generator, not thousands of duplicated source files.
-
-## Previous onchain implementation
-
-The prior Solidity contracts, compilation tools and deployment helper remain in source history/current source for reference. They are not part of the active deployment flow and the website no longer offers the 86-transaction artwork deployment. Run `npm run test:onchain` only when deliberately working on that separate implementation.
+The first build reconstructs 10,000 PNG images from the lossless bundle. Subsequent local builds reuse the verified manifest-matched output. Vercel builds from `main`; the generated static files are not duplicated in Git.

@@ -3,6 +3,14 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/milli/metadata/:id",
+      "destination": "/api/milli-metadata?id=:id"
+    },
+    {
+      "source": "/milli/downloads/metadata.csv",
+      "destination": "/api/milli-csv"
+    },
+    {
       "source": "/downloads/Hazels-CTO-Freemint-Metadata.csv",
       "destination": "/api/csv"
     },
@@ -32,6 +40,12 @@
     },
     "api/image.ts": {
       "includeFiles": "art/**"
+    },
+    "api/milli-metadata.ts": {
+      "includeFiles": "collection/milli/metadata.json.gz"
+    },
+    "api/milli-csv.ts": {
+      "includeFiles": "collection/milli/metadata.json.gz"
     }
   },
   "headers": [
@@ -58,6 +72,19 @@
         {
           "key": "Cache-Control",
           "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/milli/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         }
       ]
     }

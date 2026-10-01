@@ -1,0 +1,301 @@
+{
+  "collectionName": "Milli For Million",
+  "totalItems": 10000,
+  "generatedAt": "2026-10-01T00:59:28.197Z",
+  "traitDistribution": [
+    {
+      "layerName": "1. Background",
+      "traitName": "CryptoPunk Slate Blue",
+      "count": 2457,
+      "percentage": 24.57,
+      "rarityScore": 4.07
+    },
+    {
+      "layerName": "1. Background",
+      "traitName": "Doge To The Moon 🚀",
+      "count": 2150,
+      "percentage": 21.5,
+      "rarityScore": 4.65
+    },
+    {
+      "layerName": "1. Background",
+      "traitName": "Neo Tokyo Cyberpunk",
+      "count": 2023,
+      "percentage": 20.23,
+      "rarityScore": 4.94
+    },
+    {
+      "layerName": "1. Background",
+      "traitName": "Matrix Doge Terminal (WOW)",
+      "count": 1527,
+      "percentage": 15.27,
+      "rarityScore": 6.55
+    },
+    {
+      "layerName": "1. Background",
+      "traitName": "Blood Red Solar Flare",
+      "count": 1014,
+      "percentage": 10.14,
+      "rarityScore": 9.86
+    },
+    {
+      "layerName": "1. Background",
+      "traitName": "24K Gold Doge Vault",
+      "count": 829,
+      "percentage": 8.29,
+      "rarityScore": 12.06
+    },
+    {
+      "layerName": "2. Doge Fur & Base",
+      "traitName": "Classic Shiba Inu (Gold)",
+      "count": 2814,
+      "percentage": 28.14,
+      "rarityScore": 3.55
+    },
+    {
+      "layerName": "2. Doge Fur & Base",
+      "traitName": "Zombie Doge (Toxic Green)",
+      "count": 1773,
+      "percentage": 17.73,
+      "rarityScore": 5.64
+    },
+    {
+      "layerName": "2. Doge Fur & Base",
+      "traitName": "Cosmic Alien Doge (Cyan)",
+      "count": 1493,
+      "percentage": 14.93,
+      "rarityScore": 6.7
+    },
+    {
+      "layerName": "2. Doge Fur & Base",
+      "traitName": "24K Solid Gold Doge",
+      "count": 1245,
+      "percentage": 12.45,
+      "rarityScore": 8.03
+    },
+    {
+      "layerName": "2. Doge Fur & Base",
+      "traitName": "Shadow Cyber Doge (Black)",
+      "count": 1044,
+      "percentage": 10.44,
+      "rarityScore": 9.58
+    },
+    {
+      "layerName": "2. Doge Fur & Base",
+      "traitName": "Albino Snow Doge (White)",
+      "count": 888,
+      "percentage": 8.88,
+      "rarityScore": 11.26
+    },
+    {
+      "layerName": "2. Doge Fur & Base",
+      "traitName": "Cyborg Terminator Doge",
+      "count": 743,
+      "percentage": 7.43,
+      "rarityScore": 13.46
+    },
+    {
+      "layerName": "3. Outfit & Neckwear",
+      "traitName": "Diamond Spike Punk Collar",
+      "count": 1835,
+      "percentage": 18.35,
+      "rarityScore": 5.45
+    },
+    {
+      "layerName": "3. Outfit & Neckwear",
+      "traitName": "Heavy 24K Doge Medallion Chain",
+      "count": 1693,
+      "percentage": 16.93,
+      "rarityScore": 5.91
+    },
+    {
+      "layerName": "3. Outfit & Neckwear",
+      "traitName": "Cyberpunk Streetwear Hoodie",
+      "count": 1590,
+      "percentage": 15.9,
+      "rarityScore": 6.29
+    },
+    {
+      "layerName": "3. Outfit & Neckwear",
+      "traitName": "Moon Mission NASA EVA Suit 🚀",
+      "count": 1299,
+      "percentage": 12.99,
+      "rarityScore": 7.7
+    },
+    {
+      "layerName": "3. Outfit & Neckwear",
+      "traitName": "Punk Studded Leather Jacket",
+      "count": 1042,
+      "percentage": 10.42,
+      "rarityScore": 9.6
+    },
+    {
+      "layerName": "3. Outfit & Neckwear",
+      "traitName": "Red Paisley Doge Bandana",
+      "count": 857,
+      "percentage": 8.57,
+      "rarityScore": 11.67
+    },
+    {
+      "layerName": "3. Outfit & Neckwear",
+      "traitName": "Gentledoge Black Tie Tuxedo",
+      "count": 735,
+      "percentage": 7.35,
+      "rarityScore": 13.61
+    },
+    {
+      "layerName": "3. Outfit & Neckwear",
+      "traitName": "None",
+      "count": 949,
+      "percentage": 9.49,
+      "rarityScore": 10.54
+    },
+    {
+      "layerName": "4. Mouth & Snout Traits",
+      "traitName": "Classic Smokin’ Pipe & Clouds",
+      "count": 1794,
+      "percentage": 17.94,
+      "rarityScore": 5.57
+    },
+    {
+      "layerName": "4. Mouth & Snout Traits",
+      "traitName": "Neon Pink Bubblegum Bubble",
+      "count": 1769,
+      "percentage": 17.69,
+      "rarityScore": 5.65
+    },
+    {
+      "layerName": "4. Mouth & Snout Traits",
+      "traitName": "Happy Blep (Tongue Out)",
+      "count": 1584,
+      "percentage": 15.84,
+      "rarityScore": 6.31
+    },
+    {
+      "layerName": "4. Mouth & Snout Traits",
+      "traitName": "Golden Doge Bone 🦴",
+      "count": 1325,
+      "percentage": 13.25,
+      "rarityScore": 7.55
+    },
+    {
+      "layerName": "4. Mouth & Snout Traits",
+      "traitName": "Single 24K Gold Grill Fang",
+      "count": 1236,
+      "percentage": 12.36,
+      "rarityScore": 8.09
+    },
+    {
+      "layerName": "4. Mouth & Snout Traits",
+      "traitName": "Cyberpunk Lit Cigarette",
+      "count": 920,
+      "percentage": 9.2,
+      "rarityScore": 10.87
+    },
+    {
+      "layerName": "4. Mouth & Snout Traits",
+      "traitName": "None",
+      "count": 1372,
+      "percentage": 13.72,
+      "rarityScore": 7.29
+    },
+    {
+      "layerName": "5. Eyes & Visors",
+      "traitName": "Crimson Bull-Run Laser Eyes 🔴",
+      "count": 2140,
+      "percentage": 21.4,
+      "rarityScore": 4.67
+    },
+    {
+      "layerName": "5. Eyes & Visors",
+      "traitName": "8-Bit Thug Life Sunglasses (Deal With It)",
+      "count": 1936,
+      "percentage": 19.36,
+      "rarityScore": 5.17
+    },
+    {
+      "layerName": "5. Eyes & Visors",
+      "traitName": "Retro Anaglyph 3D Glasses",
+      "count": 1788,
+      "percentage": 17.88,
+      "rarityScore": 5.59
+    },
+    {
+      "layerName": "5. Eyes & Visors",
+      "traitName": "Cyberpunk Neon HUD Visor",
+      "count": 1640,
+      "percentage": 16.4,
+      "rarityScore": 6.1
+    },
+    {
+      "layerName": "5. Eyes & Visors",
+      "traitName": "CryptoPunk VR Holo-Goggles",
+      "count": 1290,
+      "percentage": 12.9,
+      "rarityScore": 7.75
+    },
+    {
+      "layerName": "5. Eyes & Visors",
+      "traitName": "Classic Meme Doge Eyes (Such Wow)",
+      "count": 1206,
+      "percentage": 12.06,
+      "rarityScore": 8.29
+    },
+    {
+      "layerName": "6. Headwear & Mohawk",
+      "traitName": "Electric Pink Punk Mohawk",
+      "count": 1794,
+      "percentage": 17.94,
+      "rarityScore": 5.57
+    },
+    {
+      "layerName": "6. Headwear & Mohawk",
+      "traitName": "King Doge Gold Jeweled Crown 👑",
+      "count": 1499,
+      "percentage": 14.99,
+      "rarityScore": 6.67
+    },
+    {
+      "layerName": "6. Headwear & Mohawk",
+      "traitName": "Backwards HODL Snapback Cap",
+      "count": 1529,
+      "percentage": 15.29,
+      "rarityScore": 6.54
+    },
+    {
+      "layerName": "6. Headwear & Mohawk",
+      "traitName": "Angelic Glowing Neon Halo",
+      "count": 1245,
+      "percentage": 12.45,
+      "rarityScore": 8.03
+    },
+    {
+      "layerName": "6. Headwear & Mohawk",
+      "traitName": "Cosmonaut EVA Glass Dome 🚀",
+      "count": 1055,
+      "percentage": 10.55,
+      "rarityScore": 9.48
+    },
+    {
+      "layerName": "6. Headwear & Mohawk",
+      "traitName": "Gentledoge Victorian Top Hat",
+      "count": 875,
+      "percentage": 8.75,
+      "rarityScore": 11.43
+    },
+    {
+      "layerName": "6. Headwear & Mohawk",
+      "traitName": "Viking Raider Horns (Much Raid)",
+      "count": 704,
+      "percentage": 7.04,
+      "rarityScore": 14.2
+    },
+    {
+      "layerName": "6. Headwear & Mohawk",
+      "traitName": "None",
+      "count": 1299,
+      "percentage": 12.99,
+      "rarityScore": 7.7
+    }
+  ]
+}
